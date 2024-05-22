@@ -177,8 +177,8 @@ type Engine struct {
 
 var _ IRouter = (*Engine)(nil)
 
-// New returns a new blank Engine instance without any middleware attached.
-// By default, the configuration is:
+// New 返回一个新的不带任何中间件的空白 Engine
+// 默认配置如下:
 // - RedirectTrailingSlash:  true
 // - RedirectFixedPath:      false
 // - HandleMethodNotAllowed: false
@@ -204,7 +204,7 @@ func New(opts ...OptionFunc) *Engine {
 		RemoveExtraSlash:       false,
 		UnescapePathValues:     true,
 		MaxMultipartMemory:     defaultMultipartMemory,
-		trees:                  make(methodTrees, 0, 9), // 初始化容量为9的切片（HTTP1.1请求方法共9种）
+		trees:                  make(methodTrees, 0, 9), // 前缀树，初始化容量为9的切片（HTTP1.1请求方法共9种）
 		delims:                 render.Delims{Left: "{{", Right: "}}"},
 		secureJSONPrefix:       "while(1);",
 		trustedProxies:         []string{"0.0.0.0/0", "::/0"},
@@ -217,7 +217,7 @@ func New(opts ...OptionFunc) *Engine {
 	return engine.With(opts...)
 }
 
-// Default returns an Engine instance with the Logger and Recovery middleware already attached.
+// Default 返回一个默认带有 Logger 和 Recovery 中间件的 Engine 实例
 func Default(opts ...OptionFunc) *Engine {
 	debugPrintWARNINGDefault()
 	engine := New()
